@@ -1018,7 +1018,7 @@ button,input,select,textarea,label {
     border-radius: 2px;
     color: #8A94A7;
     max-width: 100%;
-    width: 100%
+    width: 100%;
 }
 
 .input::placeholder,.textarea::placeholder {
