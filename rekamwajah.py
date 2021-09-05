@@ -1,3 +1,4 @@
+import sys
 import cv2
 import os
 from matplotlib import pyplot as plt
@@ -126,17 +127,17 @@ def draw_rectangle(image, coords):
                               (200, 200, 0), 4)
 
 # get and save image
-token = input('Token: ').lower()
-folder = "siswa/" + token # input name
+token = input('Token: ').upper()
 df = pd.read_csv('database.csv')
-db_token = df[df['token'] == token]
-'''
-|nama|nrp|token|rfid|
-|---|---|---|---|
-|prima jauhar|420|token_123|None|
-'''
-if len(db_token['token'].values) > 0 and token == db_token['token'].values[0]:
-    pass
+df = pd.read_csv('database.csv')
+db_token = df[df['Token'] == token].values
+
+if len(db_token) == 0:
+    print('Token salah')
+    sys.exit()
+
+id, nama, nrp, tkn = db_token[0]
+folder = f"siswa/{nrp}"
 
 cv2.namedWindow("Simpan Gambar", cv2.WINDOW_AUTOSIZE)
 if not os.path.exists(folder):
