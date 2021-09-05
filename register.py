@@ -2,23 +2,25 @@ import random
 import string
 import sys
 import csv
-import os
+import pandas as pd
+
+df = pd.read_csv('database.csv')
+token = df['Token'].values
 
 length = 6
 upper = string.ascii_uppercase
 num = string.digits
 all = upper + num
-temp = random.sample(all,length)
+
+nama = sys.argv[1].strip()
+nrp = sys.argv[2].strip()
+
+temp = random.sample(all, length)
 password = "".join(temp)
-nama = sys.argv[1]
-nrp = sys.argv[2]
 
-
-if not os.path.exists('database.csv'):
-    fields=['ID','Nama','NRP','Token']
-    with open(r'database.csv', 'a',newline='') as f:
-        writer = csv.writer(f)
-        writer.writerow(fields)
+while password in token:
+    temp = random.sample(all, length)
+    password = "".join(temp)
 
 file = open("database.csv")
 reader = csv.reader(file)
@@ -28,4 +30,3 @@ with open(r'database.csv', 'a', newline='') as f:
     fields=[id, nama, nrp, password]
     writer = csv.writer(f)
     writer.writerow(fields)
-

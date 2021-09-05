@@ -1,6 +1,14 @@
 import eel
 import os
 import sys
+import csv
+
+if not os.path.exists('database.csv'):
+    fields=['ID', 'Nama', 'NRP', 'Token']
+    with open(r'database.csv', 'a', newline='') as f:
+        writer = csv.writer(f)
+        writer.writerow(fields)
+
 
 def resource_path(relative_path):
     try:
@@ -24,9 +32,9 @@ def catatKehadiran():
     os.system('python catatpengunjung.py') #Ganti sesuai versi python
 
 @eel.expose
-def register(nama,nrp):
+def register(nama, nrp):
     print("Register Pengguna")
-    print("Nama: {} | NRP: {}".format(nama,nrp))
-    os.system('python register.py {} {}'.format(nama,nrp))
+    print("Nama: {} | NRP: {}".format(nama, nrp))
+    os.system('python register.py {} {}'.format(nama, nrp))
 
 eel.start('index.html', size=(1000, 600), mode='edge')
