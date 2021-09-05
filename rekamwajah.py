@@ -129,7 +129,6 @@ def draw_rectangle(image, coords):
 # get and save image
 token = input('Token: ').upper()
 df = pd.read_csv('database.csv')
-df = pd.read_csv('database.csv')
 db_token = df[df['Token'] == token].values
 
 if len(db_token) == 0:
