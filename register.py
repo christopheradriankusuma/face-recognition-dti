@@ -1,8 +1,19 @@
+import pandas as pd
+import cv2
 import random
 import string
 import sys
 import csv
-import pandas as pd
+import qrcode
+
+def read(img):
+    img = cv2.imread(img)
+    det = cv2.QRCodeDetector()
+    val, pts, st_code = det.detectAndDecode(img)
+    print(val)
+
+def create(data):
+    return qrcode.make(data)
 
 df = pd.read_csv('database.csv')
 token = df['Token'].values
@@ -22,7 +33,7 @@ while password in token:
     temp = random.sample(all, length)
     password = "".join(temp)
 
-# api untuk token
+qr = qrcode.make(password)
 
 file = open("database.csv")
 reader = csv.reader(file)
