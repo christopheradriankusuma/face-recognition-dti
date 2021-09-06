@@ -127,7 +127,7 @@ def draw_rectangle(image, coords):
                               (200, 200, 0), 4)
 
 # get and save image
-token = input('Token: ').upper()
+token = input('Token: ').upper() # atau qr code
 df = pd.read_csv('database.csv')
 db_token = df[df['Token'] == token].values
 

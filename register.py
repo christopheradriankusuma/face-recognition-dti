@@ -22,6 +22,8 @@ while password in token:
     temp = random.sample(all, length)
     password = "".join(temp)
 
+# api untuk token
+
 file = open("database.csv")
 reader = csv.reader(file)
 id = len(list(reader))
