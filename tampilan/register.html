@@ -12,7 +12,6 @@
     <script src="https://unpkg.com/scrollreveal@4.0.0/dist/scrollreveal.min.js"></script>
     <script type="text/javascript" src="/eel.js"></script>
     <script type="text/javascript" src="main.js"></script>
-
 </head>
 
 <body class="is-boxed has-animations">
@@ -49,7 +48,8 @@
                                     <div class="button-group">
                                         <input type="button" class="submit button button-primary" value="Register"
                                             id="register-submit" onclick="validateForm()">
-                                        <input type="button" class="submit button button-primary" value="Sudah Daftar?">
+                                            <a href="" class="submit button button-primary button-transparent">Sudah Daftar?</a>
+                                        <!-- <input  value="Sudah Daftar?"> -->
                                     </div>
                                         
                                 </form>
@@ -84,10 +84,10 @@
             if (x == "" || y == "") {
                 alert("Harus diisi!");                
             }
-            else if (!/^[A-Za-z]+$/.test(x)) {
+            else if (!/^[A-Za-z ]+$/.test(x)) {
                 alert("Masukkan Nama yang benar!");                
             }
-            else if (!/^[0-9]+$/.test(y)) {                
+            else if (!/^[0-9 ]+$/.test(y)) {                
                 alert("Masukkan NRP dengan angka saja!");                
             }
             else{
