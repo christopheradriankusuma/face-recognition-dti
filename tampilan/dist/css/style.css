@@ -533,6 +533,10 @@ form label {
     margin-bottom: 5px;
 }
 
+form input {
+    margin: 10px;
+}
+
 
 .container,.container-sm {
     width: 100%;
@@ -1142,8 +1146,13 @@ form label {
     height: 32px
 }
 
+.button-transparent {
+    background-color: none !important;
+}
+
 .button-primary {
     background: #097dea;
+    opacity: 0;
     background: linear-gradient(65deg, #0270D7 0, #0F8AFD 100%)
 }
 
@@ -1169,11 +1178,15 @@ form label {
 }
 
 .button-group {
-    display: flex;
+    display: block;
     position: relative;
-    /* justify-content: center; */
     align-items: center;
-    margin: 10px 0px;
+    margin: 20px 0px;
+}
+
+.button-group input {
+    display: inline-block;
+    margin: 15px 0;
 }
 
 .site-header {
@@ -1227,6 +1240,14 @@ form label {
         transform: skewY(-12deg)
     }
 }
+
+
+/* .button-group {
+    display: flex;
+    position: relative;
+    align-items: center;
+    margin: 20px 0px;
+} */
 
 .hero {
     text-align: center;
@@ -1432,13 +1453,13 @@ form label {
         margin-right: auto
     }
 
-    .hero-cta .button {
+    /* .hero-cta .button {
         display: flex
-    }
+    } */
 
-    .hero-cta .button+.button {
+    /* .hero-cta .button+.button {
         margin-top: 16px
-    }
+    } */
 
     .hero-figure::after,.hero-figure-box-03,.hero-figure-box-04,.hero-figure-box-09 {
         display: none
