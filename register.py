@@ -5,6 +5,7 @@ import string
 import sys
 import csv
 import qrcode
+from datetime import datetime
 
 def read(img):
     img = cv2.imread(img)
@@ -38,6 +39,10 @@ qr = qrcode.make(password)
 file = open("database.csv")
 reader = csv.reader(file)
 id = len(list(reader))
+
+tanggal_sekarang = datetime.today().strftime('%Y-%m-%d_%H-%M-%S')
+
+qr.save("qrcode/{}_{}.png".format(id,tanggal_sekarang))
 
 with open(r'database.csv', 'a', newline='') as f:
     fields=[id, nama, nrp, password]
