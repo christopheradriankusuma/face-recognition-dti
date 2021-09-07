@@ -528,6 +528,12 @@ button,input,select,textarea,label {
     line-height: 30px
 }
 
+form label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+
 .container,.container-sm {
     width: 100%;
     margin: 0 auto;
@@ -1160,6 +1166,14 @@ button,input,select,textarea,label {
         width:100%;
         max-width: 280px
     }
+}
+
+.button-group {
+    display: flex;
+    position: relative;
+    /* justify-content: center; */
+    align-items: center;
+    margin: 10px 0px;
 }
 
 .site-header {
