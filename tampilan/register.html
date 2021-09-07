@@ -57,6 +57,10 @@
                                 <input type="button" class="submit button" value="Catat Pengunjung" onclick="catatKehadiran()">\ -->
                             </div>
                         </div>
+                        <div id="qr-image">
+                            <!-- <img style="min-width: 125%" src="dist/images/qrcode/151231.png" alt="hehe"> -->
+                        </div>
+                        
                         <div class="hero-figure anime-element">
                             <svg class="placeholder" width="528" height="396" viewBox="0 0 528 396">
                                 <rect width="528" height="396" style="fill:transparent;" />
@@ -93,7 +97,8 @@
             else{
                 register();
                 alert("Berhasil registrasi!");
-                location.reload(); 
+                // location.reload(); 
+                document.getElementById("qr-image").innerHTML += `<a href="dist/images/qrcode/${y}.png" download="${y}.png"><img src="dist/images/qrcode/${y}.png" width="100px" height="100px"></a>`;
             }
         }
     </script>

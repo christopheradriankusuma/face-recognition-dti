@@ -101,6 +101,11 @@ img {
     border-style: none
 }
 
+#qr-image {
+    min-width: 20% !important;
+    z-index: 1;
+}
+
 svg:not(:root) {
     overflow: hidden
 }
@@ -531,10 +536,6 @@ button,input,select,textarea,label {
 form label {
     display: block;
     margin-bottom: 5px;
-}
-
-form input {
-    margin: 10px;
 }
 
 
@@ -1147,12 +1148,11 @@ form input {
 }
 
 .button-transparent {
-    background-color: none !important;
+    background: none !important;
 }
 
 .button-primary {
     background: #097dea;
-    opacity: 0;
     background: linear-gradient(65deg, #0270D7 0, #0F8AFD 100%)
 }
 
@@ -1174,6 +1174,10 @@ form input {
     .button-wide-mobile {
         width:100%;
         max-width: 280px
+    }
+        
+    form input {
+        margin: 10px;
     }
 }
 
@@ -1238,6 +1242,10 @@ form input {
         transform-origin: 0;
         -webkit-transform: skewY(-12deg);
         transform: skewY(-12deg)
+    }
+    
+    form input {
+        margin: 10px 0;
     }
 }
 

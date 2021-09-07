@@ -24,8 +24,11 @@ upper = string.ascii_uppercase
 num = string.digits
 all = upper + num
 
-nama = sys.argv[1].strip()
-nrp = sys.argv[2].strip()
+# python.py das asda sda sdas dsa 13123123789
+
+nama = sys.argv[1:-1]
+nama_fix = ' '.join(nama)
+nrp = sys.argv[-1]
 
 temp = random.sample(all, length)
 password = "".join(temp)
@@ -40,11 +43,11 @@ file = open("database.csv")
 reader = csv.reader(file)
 id = len(list(reader))
 
-tanggal_sekarang = datetime.today().strftime('%Y-%m-%d_%H-%M-%S')
+# tanggal_sekarang = datetime.today().strftime('%Y-%m-%d_%H-%M-%S')
 
-qr.save("qrcode/{}_{}.png".format(id,tanggal_sekarang))
+qr.save("tampilan/dist/images/qrcode/{}.png".format(nrp))
 
 with open(r'database.csv', 'a', newline='') as f:
-    fields=[id, nama, nrp, password]
+    fields=[id, nama_fix, nrp, password]
     writer = csv.writer(f)
     writer.writerow(fields)

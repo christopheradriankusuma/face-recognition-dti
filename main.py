@@ -35,6 +35,6 @@ def catatKehadiran():
 def register(nama, nrp):
     print("Register Pengguna")
     print("Nama: {} | NRP: {}".format(nama, nrp))
-    os.system('python register.py {} {}'.format(nama, nrp))
+    os.system("python register.py {} {}".format(nama, nrp))
 
 eel.start('index.html', size=(1000, 600), mode='edge')
