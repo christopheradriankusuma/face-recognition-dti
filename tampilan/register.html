@@ -96,9 +96,10 @@
             }
             else{
                 register();
-                alert("Berhasil registrasi!");
+                alert("Berhasil registrasi!\nKlik QRCode untuk mendownload");
                 // location.reload(); 
-                document.getElementById("qr-image").innerHTML += `<a href="dist/images/qrcode/${y}.png" download="${y}.png"><img src="dist/images/qrcode/${y}.png" width="100px" height="100px"></a>`;
+                document.getElementById("qr-image").innerHTML += `<a id="download-qr" href="dist/images/qrcode/${y}.png" download="${y}.png"><img src="dist/images/qrcode/${y}.png" width="100%" height="100%"></a>`;
+                document.getElementById("download-qr").click()
             }
         }
     </script>

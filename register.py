@@ -6,6 +6,12 @@ import sys
 import csv
 import qrcode
 from datetime import datetime
+import matplotlib.pyplot as plt
+
+from PIL import Image
+from PIL import ImageFont
+from PIL import ImageDraw 
+
 
 def read(img):
     img = cv2.imread(img)
@@ -45,7 +51,23 @@ id = len(list(reader))
 
 # tanggal_sekarang = datetime.today().strftime('%Y-%m-%d_%H-%M-%S')
 
-qr.save("tampilan/dist/images/qrcode/{}.png".format(nrp))
+lokasi_file = "tampilan/dist/images/qrcode/{}.png".format(nrp)
+
+qr.save(lokasi_file)
+
+## ADD TEXT TO IMAGE
+image = Image.open(lokasi_file)
+ukuran = image.size
+draw = ImageDraw.Draw(image)
+
+# font = ImageFont.load_default()
+font = ImageFont.truetype("arial.ttf", 24)
+
+# draw.text((x, y),"Sample Text",(r,g,b))
+draw.text(((ukuran[0]//2)-32, (ukuran[1]*8.69)//10),password,fill=0,font=font)
+
+# image.show()
+image.save(lokasi_file)
 
 with open(r'database.csv', 'a', newline='') as f:
     fields=[id, nama_fix, nrp, password]
