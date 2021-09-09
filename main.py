@@ -9,6 +9,8 @@ if not os.path.exists('database.csv'):
         writer = csv.writer(f)
         writer.writerow(fields)
 
+if not os.path.exists('siswa'):
+    os.mkdir('siswa')
 
 def resource_path(relative_path):
     try:
