@@ -14,9 +14,9 @@ def plt_show(image, title=""):
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     plt.axis("off")
     plt.title(title)
-    plt.imshow(image, cmap="Greys_r")
-    # plt.show()
-    plt.pause(1)
+    #plt.imshow(image, cmap="Greys_r")
+    #plt.show()
+    #plt.pause(1)
     plt.close()
 
 
@@ -24,7 +24,7 @@ nyalain = cv2.VideoCapture(camera) #Raspberry Mode
 #nyalain = cv2.VideoCapture(camera, cv2.CAP_DSHOW) #Untuk Pengembangan
 _, frame = nyalain.read()
 nyalain.release()
-#plt_show(frame)  
+#plt_show(frame)
 
 # face detection
 obyek = cv2.CascadeClassifier("xml/frontal_face.xml")
@@ -34,7 +34,7 @@ min_neighbors = 5
 min_size = (50, 50)
 biggest_only = True
 flags = cv2.CASCADE_FIND_BIGGEST_OBJECT |             cv2.CASCADE_DO_ROUGH_SEARCH if biggest_only else             cv2.CASCADE_SCALE_IMAGE
-        
+
 faces_coord = obyek.detectMultiScale(frame,
                                         scaleFactor=scale_factor,
                                         minNeighbors=min_neighbors,
@@ -51,7 +51,7 @@ class NyalaVideo(object):
 
     def __del__(self):
         self.video.release()
-    
+
     def get_frame(self, in_grayscale=False):
         _, frame = self.video.read()
         if in_grayscale:
@@ -62,7 +62,7 @@ class NyalaVideo(object):
 class KenaliWajah(object):
     def __init__(self, xml_path):
         self.classifier = cv2.CascadeClassifier(xml_path)
-    
+
     def detect(self, image, biggest_only=True):
         scale_factor = 1.2
         min_neighbors = 5
@@ -105,14 +105,14 @@ def resize(images, size=(100, 100)):
     images_norm = []
     for image in images:
         if image.shape < size:
-            image_norm = cv2.resize(image, size, 
+            image_norm = cv2.resize(image, size,
                                     interpolation = cv2.INTER_AREA)
         else:
-            image_norm = cv2.resize(image, size, 
+            image_norm = cv2.resize(image, size,
                                     interpolation = cv2.INTER_CUBIC)
         images_norm.append(image_norm)
 
-    return images_norm 
+    return images_norm
 
 # normalize face
 def normalize_faces(frame, faces_coord):
@@ -124,13 +124,13 @@ def normalize_faces(frame, faces_coord):
 # rectangle line
 def draw_rectangle(image, coords):
     for (x, y, w, h) in coords:
-        w_rm = int(0.2 * w / 2) 
-        cv2.rectangle(image, (x + w_rm, y), (x + w - w_rm, y + h), 
+        w_rm = int(0.2 * w / 2)
+        cv2.rectangle(image, (x + w_rm, y), (x + w - w_rm, y + h),
                               (200, 200, 0), 4)
 
 # get and save image
 token = input('Token: ').upper() # atau qr code
-df = pd.read_csv('database.csv')
+df = pd.read_csv('database.csv', dtype={'NRP':object})
 db_token = df[df['Token'] == token].values
 
 if len(db_token) == 0:
@@ -154,9 +154,11 @@ if not os.path.exists(folder):
             plt_show(faces[0], "Gambar Tersimpan:" + str(counter))
             counter += 1
         draw_rectangle(frame, faces_coord) # rectangle around face
-        cv2.namedWindow("Simpan Gambar", cv2.WND_PROP_FULLSCREEN)
+        if counter < 11:
+            cv2.putText(frame, f"{counter}/10", (5, frame.shape[0]-5), cv2.FONT_HERSHEY_DUPLEX, 1, (255, 255, 255), 1, cv2.LINE_AA)
+        cv2.namedWindow(f"Simpan Gambar", cv2.WND_PROP_FULLSCREEN)
         cv2.setWindowProperty("Simpan Gambar",cv2.WND_PROP_FULLSCREEN,cv2.WINDOW_FULLSCREEN)
-        cv2.imshow("Simpan Gambar", frame) # show in external
+        cv2.imshow(f"Simpan Gambar", frame) # show in external
         cv2.waitKey(50)
         timer += 50
     cv2.destroyAllWindows()

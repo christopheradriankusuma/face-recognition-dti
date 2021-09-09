@@ -165,7 +165,7 @@ while detecting:
                             (rekamWajah[i][0], rekamWajah[i][1] - 20),
                             cv2.FONT_HERSHEY_DUPLEX, 1.0, (102, 255, 0), 1)
                 # Buat file baru dan Input data ke CSV file
-                input = [labels_dic[pred],date,timeStamp]
+                input = [nama,date,timeStamp]
                 Hour,Minute,Second=timeStamp.split(":")
                 if(label2 != labels_dic[pred]):
                     inputData(input)
