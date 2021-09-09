@@ -15,14 +15,16 @@ def plt_show(image, title=""):
     plt.axis("off")
     plt.title(title)
     plt.imshow(image, cmap="Greys_r")
-    plt.show()
+    # plt.show()
+    plt.pause(1)
+    plt.close()
 
 
 nyalain = cv2.VideoCapture(camera) #Raspberry Mode
 #nyalain = cv2.VideoCapture(camera, cv2.CAP_DSHOW) #Untuk Pengembangan
 _, frame = nyalain.read()
 nyalain.release()
-plt_show(frame)  
+#plt_show(frame)  
 
 # face detection
 obyek = cv2.CascadeClassifier("xml/frontal_face.xml")
@@ -138,8 +140,8 @@ if len(db_token) == 0:
 id, nama, nrp, tkn = db_token[0]
 folder = f"siswa/{nrp}"
 
-cv2.namedWindow("Simpan Gambar", cv2.WINDOW_AUTOSIZE)
 if not os.path.exists(folder):
+    cv2.namedWindow("Simpan Gambar", cv2.WINDOW_AUTOSIZE)
     os.mkdir(folder)
     counter = 1
     timer = 0

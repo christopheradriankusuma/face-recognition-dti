@@ -16,26 +16,28 @@ def plt_show(image, title=""):
     plt.axis("off")
     plt.title(title)
     plt.imshow(image, cmap="Greys_r")
-    plt.show()
+    #plt.show()
+    plt.pause(2)
+    plt.close()
 
 # video camera
 class NyalaVideo(object):
     def __init__(self, index=camera):
-        #self.video = cv2.VideoCapture(index) #Raspberry Mode
-        self.video = cv2.VideoCapture(index, cv2.CAP_DSHOW) #Untuk Pengembangan
+        self.video = cv2.VideoCapture(index) #Raspberry Mode
+        #self.video = cv2.VideoCapture(index, cv2.CAP_DSHOW) #Untuk Pengembangan
         self.index = index
         print (self.video.isOpened())
 
     def __del__(self):
         self.video.release()
-    
+
     def get_frame(self, in_grayscale=False):
         _, frame = self.video.read()
         if in_grayscale:
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         return frame
 
-# face detection    
+# face detection
 class KenaliWajah(object):
     def __init__(self, xml_path):
         self.classifier = cv2.CascadeClassifier(xml_path)
@@ -141,7 +143,8 @@ def inputData(list_of_elem):
 
 label2 = ""
 # mask detection and face recognition
-while True: 
+detecting = True
+while detecting: 
     objek = nyalain.get_frame()
     rekamWajah = detector.detect(objek, False) #deteksi lebih dari satu wajah
 
@@ -154,10 +157,11 @@ while True:
             conf = collector.getMinDist()
             pred = collector.getMinLabel()
             threshold = 76 # eigen, fisher, lbph [mean 3375,1175,65] [high lbph 76]
-            print ("Nama: " + labels_dic[pred].capitalize() + "\nSkala Prediksi: " + str(round(conf)))
-            
+            df = pd.read_csv('database.csv', dtype={'NRP':object})
+            nama = df[df['NRP'] == labels_dic[pred]]['Nama'].values[0]
+            print ("Nama: " + nama + "\nSkala Prediksi: " + str(round(conf)))
             if conf < threshold: # menerapkan ambang batas
-                cv2.putText(objek, labels_dic[pred].capitalize(),
+                cv2.putText(objek, nama,
                             (rekamWajah[i][0], rekamWajah[i][1] - 20),
                             cv2.FONT_HERSHEY_DUPLEX, 1.0, (102, 255, 0), 1)
                 # Buat file baru dan Input data ke CSV file
@@ -166,6 +170,7 @@ while True:
                 if(label2 != labels_dic[pred]):
                     inputData(input)
                 label2 = labels_dic[pred]
+                #plt_show(objek, nama)
             else:
                 cv2.putText(objek, "Tidak Dikenali",
                     (rekamWajah[i][0], rekamWajah[i][1] - 10),
@@ -180,5 +185,5 @@ while True:
     if cv2.waitKey(33) & 0xFF == 27:
         cv2.destroyAllWindows()
         break
-    
+
 del nyalain
