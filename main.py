@@ -4,8 +4,14 @@ import sys
 import csv
 
 if not os.path.exists('database.csv'):
-    fields=['ID', 'Nama', 'NRP', 'Token']
+    fields = ['ID', 'Nama', 'NRP', 'Token']
     with open(r'database.csv', 'a', newline='') as f:
+        writer = csv.writer(f)
+        writer.writerow(fields)
+
+if not os.path.exists('absen.csv'):
+    fields = ['Nama', 'Tgl', 'Jam']
+    with open('absen.csv', 'a', newline='') as f:
         writer = csv.writer(f)
         writer.writerow(fields)
 
