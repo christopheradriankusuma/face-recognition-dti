@@ -4,10 +4,7 @@
 
 
 from pathlib import Path
-# import importlib.util
-sys.path.append('/Campus Lyfe/Face Recognition IT/face-recognition-dti/window/Window_2')
-from gui import 
-# from "/Campus Lyfe/Face Recognition IT/face-recognition-dti/window/Window_2/gui.py" import
+
 # from tkinter import *
 # Explicit imports to satisfy Flake8
 from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage

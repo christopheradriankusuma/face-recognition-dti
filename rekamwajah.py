@@ -3,6 +3,8 @@ import cv2
 import os
 from matplotlib import pyplot as plt
 import pandas as pd
+from bacaqr import baca_qr
+
 #SetUp Port Kameranya
 camera = 0
 
@@ -129,12 +131,17 @@ def draw_rectangle(image, coords):
                               (200, 200, 0), 4)
 
 # get and save image
-token = input('Token: ').upper() # atau qr code
-df = pd.read_csv('database.csv', dtype={'NRP':object})
+token = baca_qr()
+# if not token:
+#     token = input('Token: ').upper()
+df = pd.read_csv('database.csv', dtype={'NRP': object})
 db_token = df[df['Token'] == token].values
 
 if len(db_token) == 0:
     print('Token salah')
+    sys.exit()
+
+if not token:
     sys.exit()
 
 id, nama, nrp, tkn = db_token[0]
