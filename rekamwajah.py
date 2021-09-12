@@ -4,6 +4,8 @@ import os
 from matplotlib import pyplot as plt
 import pandas as pd
 from bacaqr import baca_qr
+from io import StringIO
+import requests
 
 #SetUp Port Kameranya
 camera = 0
@@ -134,7 +136,8 @@ def draw_rectangle(image, coords):
 token = baca_qr()
 # if not token:
 #     token = input('Token: ').upper()
-df = pd.read_csv('database.csv', dtype={'NRP': object})
+df = pd.read_csv(StringIO(requests.get("https://absensi-dti.herokuapp.com/hayo-ngapain-kesini-dti-9987b6e63716f1c918d5ed38fb7b3bd7").text), dtype={'NRP': object})
+# df = pd.read_csv('database.csv', dtype={'NRP': object})
 db_token = df[df['Token'] == token].values
 
 if len(db_token) == 0:

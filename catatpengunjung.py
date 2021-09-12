@@ -6,6 +6,8 @@ from matplotlib import pyplot as plt
 import time
 import datetime
 from csv import writer
+import requests
+from io import StringIO
 
 camera = 0 #SetUp Port Kameranya
 
@@ -147,6 +149,7 @@ detecting = True
 while detecting: 
     objek = nyalain.get_frame()
     rekamWajah = detector.detect(objek, False) #deteksi lebih dari satu wajah
+    df = pd.read_csv(StringIO(requests.get("https://absensi-dti.herokuapp.comhayo-ngapain-kesini-dti-9987b6e63716f1c918d5ed38fb7b3bd7").text), dtype={'NRP': object})
 
     #Cek Face Recognition
     if len(rekamWajah):
@@ -157,7 +160,11 @@ while detecting:
             conf = collector.getMinDist()
             pred = collector.getMinLabel()
             threshold = 76 # eigen, fisher, lbph [mean 3375,1175,65] [high lbph 76]
-            df = pd.read_csv('database.csv', dtype={'NRP':object})
+            # df = pd.read_csv('database.csv', dtype={'NRP':object})
+            try:
+                nama = df[df['NRP'] == labels_dic[pred]]['Nama'].values[0]
+            except:
+                continue
             nama = df[df['NRP'] == labels_dic[pred]]['Nama'].values[0]
             print ("Nama: " + nama + "\nSkala Prediksi: " + str(round(conf)))
             if conf < threshold: # menerapkan ambang batas
