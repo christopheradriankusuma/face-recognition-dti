@@ -44,7 +44,7 @@ def register():
 def download(nrp):
     return send_from_directory('static/images/', nrp, as_attachment=True)
 
-# @app.route('/get-database', methods=['GET'])
+# @app.route('/lol', methods=['GET'])
 # def db():
 #     return send_from_directory('', 'database.csv', as_attachment=True)
 
