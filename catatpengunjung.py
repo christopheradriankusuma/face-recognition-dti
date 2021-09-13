@@ -1,3 +1,4 @@
+from secret import SECRET_URL
 import cv2
 import numpy as np
 import os
@@ -43,7 +44,7 @@ class NyalaVideo(object):
 class KenaliWajah(object):
     def __init__(self, xml_path):
         self.classifier = cv2.CascadeClassifier(xml_path)
-    
+
     def detect(self, image, biggest_only=True):
         scale_factor = 1.2
         min_neighbors = 5
@@ -60,7 +61,6 @@ class KenaliWajah(object):
 # crop images
 def potongWajah(image, rekamWajah):
     faces = []
-    
     for (x, y, w, h) in rekamWajah:
         w_rm = int(0.3 * w / 2)
         faces.append(image[y: y + h, x + w_rm: x + w - w_rm])
@@ -136,42 +136,40 @@ detector = KenaliWajah("xml/frontal_face.xml")
 nyalain = NyalaVideo(camera)
 
 def inputData(list_of_elem):
-    # Open file in append mode
     with open("absen.csv", 'a+', newline='') as write_obj:
-        # Create a writer object from csv module
         csv_writer = writer(write_obj)
-        # Add contents of list as last row in the csv file
         csv_writer.writerow(list_of_elem)
 
 label2 = ""
-# mask detection and face recognition
+
 detecting = True
+timer = 0
 while detecting: 
     objek = nyalain.get_frame()
-    rekamWajah = detector.detect(objek, False) #deteksi lebih dari satu wajah
-    df = pd.read_csv(StringIO(requests.get("https://absensi-dti.herokuapp.comhayo-ngapain-kesini-dti-9987b6e63716f1c918d5ed38fb7b3bd7").text), dtype={'NRP': object})
+    rekamWajah = detector.detect(objek, False)
+    if timer == 0:
+        df = pd.read_csv(StringIO(requests.get(SECRET_URL).text), dtype={'NRP': object})
+    timer = (timer + 1) % 1000
 
     #Cek Face Recognition
     if len(rekamWajah):
-        faces = normalize_faces(objek, rekamWajah) # norm pipeline
-        for i, face in enumerate(faces): # untuk setiap wajah yang terdeteksi
+        faces = normalize_faces(objek, rekamWajah)
+        for i, face in enumerate(faces):
             collector = cv2.face.StandardCollector_create()
-            lbphAlgo.predict_collect(face, collector)  # algoritma yang dipilih
+            lbphAlgo.predict_collect(face, collector)
             conf = collector.getMinDist()
             pred = collector.getMinLabel()
             threshold = 76 # eigen, fisher, lbph [mean 3375,1175,65] [high lbph 76]
-            # df = pd.read_csv('database.csv', dtype={'NRP':object})
             try:
                 nama = df[df['NRP'] == labels_dic[pred]]['Nama'].values[0]
             except:
                 continue
             nama = df[df['NRP'] == labels_dic[pred]]['Nama'].values[0]
             print ("Nama: " + nama + "\nSkala Prediksi: " + str(round(conf)))
-            if conf < threshold: # menerapkan ambang batas
+            if conf < threshold:
                 cv2.putText(objek, nama,
                             (rekamWajah[i][0], rekamWajah[i][1] - 20),
                             cv2.FONT_HERSHEY_DUPLEX, 1.0, (102, 255, 0), 1)
-                # Buat file baru dan Input data ke CSV file
                 input = [nama,date,timeStamp]
                 Hour,Minute,Second=timeStamp.split(":")
                 if(label2 != labels_dic[pred]):
@@ -182,13 +180,13 @@ while detecting:
                 cv2.putText(objek, "Tidak Dikenali",
                     (rekamWajah[i][0], rekamWajah[i][1] - 10),
                     cv2.FONT_HERSHEY_DUPLEX, 1.0, (66, 55, 245), 1)
-        draw_rectangle(objek, rekamWajah) # rectangle around face
+        draw_rectangle(objek, rekamWajah)
     cv2.putText(objek, "ESC to exit", (5, objek.shape[0] - 5),
     cv2.FONT_HERSHEY_DUPLEX, 1, (255, 255, 255), 1, cv2.LINE_AA)
     # Full screen mode
     cv2.namedWindow("Sistem Absensi Face Recognitions", cv2.WND_PROP_FULLSCREEN)
     cv2.setWindowProperty("Sistem Absensi Face Recognitions",cv2.WND_PROP_FULLSCREEN,cv2.WINDOW_FULLSCREEN)
-    cv2.imshow("Sistem Absensi Face Recognitions", objek) # live feed in external
+    cv2.imshow("Sistem Absensi Face Recognitions", objek)
     if cv2.waitKey(33) & 0xFF == 27:
         cv2.destroyAllWindows()
         break

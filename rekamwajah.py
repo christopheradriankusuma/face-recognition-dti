@@ -1,3 +1,4 @@
+from secret import SECRET_URL
 import sys
 import cv2
 import os
@@ -87,7 +88,6 @@ obyek = KenaliWajah("xml/frontal_face.xml")
 # crop images
 def cut_faces(image, faces_coord):
     faces = []
-      
     for (x, y, w, h) in faces_coord:
         w_rm = int(0.2 * w / 2)
         faces.append(image[y: y + h, x + w_rm: x + w - w_rm])
@@ -132,12 +132,8 @@ def draw_rectangle(image, coords):
         cv2.rectangle(image, (x + w_rm, y), (x + w - w_rm, y + h),
                               (200, 200, 0), 4)
 
-# get and save image
 token = baca_qr()
-# if not token:
-#     token = input('Token: ').upper()
-df = pd.read_csv(StringIO(requests.get("https://absensi-dti.herokuapp.com/hayo-ngapain-kesini-dti-9987b6e63716f1c918d5ed38fb7b3bd7").text), dtype={'NRP': object})
-# df = pd.read_csv('database.csv', dtype={'NRP': object})
+df = pd.read_csv(StringIO(requests.get(SECRET_URL).text), dtype={'NRP': object})
 db_token = df[df['Token'] == token].values
 
 if len(db_token) == 0:
@@ -155,20 +151,20 @@ if not os.path.exists(folder):
     os.mkdir(folder)
     counter = 1
     timer = 0
-    while counter < 11 : # take 10 pictures
+    while counter < 11:
         frame = nyalain.get_frame()
-        faces_coord = obyek.detect(frame) # obyek
-        if len(faces_coord) and timer % 700 == 50: # timer
-            faces = normalize_faces(frame, faces_coord) # norm pipeline
+        faces_coord = obyek.detect(frame)
+        if len(faces_coord) and timer % 700 == 50:
+            faces = normalize_faces(frame, faces_coord)
             cv2.imwrite(folder + '/' + str(counter) + '.jpg', faces[0])
             plt_show(faces[0], "Gambar Tersimpan:" + str(counter))
             counter += 1
-        draw_rectangle(frame, faces_coord) # rectangle around face
+        draw_rectangle(frame, faces_coord)
         if counter < 11:
             cv2.putText(frame, f"{counter}/10", (5, frame.shape[0]-5), cv2.FONT_HERSHEY_DUPLEX, 1, (255, 255, 255), 1, cv2.LINE_AA)
         cv2.namedWindow(f"Simpan Gambar", cv2.WND_PROP_FULLSCREEN)
         cv2.setWindowProperty("Simpan Gambar",cv2.WND_PROP_FULLSCREEN,cv2.WINDOW_FULLSCREEN)
-        cv2.imshow(f"Simpan Gambar", frame) # show in external
+        cv2.imshow(f"Simpan Gambar", frame)
         cv2.waitKey(50)
         timer += 50
     cv2.destroyAllWindows()
