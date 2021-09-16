@@ -61,10 +61,6 @@ class KenaliWajah(object):
 # crop images
 def potongWajah(image, rekamWajah):
     faces = []
-<<<<<<< HEAD
-
-=======
->>>>>>> fcf5c14c6fd2e4a8262a076df4d35d5c8e219d1b
     for (x, y, w, h) in rekamWajah:
         w_rm = int(0.3 * w / 2)
         faces.append(image[y: y + h, x + w_rm: x + w - w_rm])
@@ -155,15 +151,12 @@ while detecting:
     if timer == 0:
         df = pd.read_csv(StringIO(requests.get("https://absensi-dti.herokuapp.com/hayo-ngapain-kesini-dti-9987b6e63716f1c918d5ed38fb7b3bd7").text), dtype={'NRP': object})
     timer = (timer + 1) % 1000
-=======
 while detecting: 
     objek = nyalain.get_frame()
     rekamWajah = detector.detect(objek, False)
     if timer == 0:
         df = pd.read_csv(StringIO(requests.get(SECRET_URL).text), dtype={'NRP': object})
     timer = (timer + 1) % 1000
-
->>>>>>> fcf5c14c6fd2e4a8262a076df4d35d5c8e219d1b
     #Cek Face Recognition
     if len(rekamWajah):
         faces = normalize_faces(objek, rekamWajah)
@@ -177,21 +170,13 @@ while detecting:
                 nama = df[df['NRP'] == labels_dic[pred]]['Nama'].values[0]
             except:
                 continue
-<<<<<<< HEAD
-=======
-            nama = df[df['NRP'] == labels_dic[pred]]['Nama'].values[0]
->>>>>>> fcf5c14c6fd2e4a8262a076df4d35d5c8e219d1b
             print ("Nama: " + nama + "\nSkala Prediksi: " + str(round(conf)))
             if conf < threshold:
                 cv2.putText(objek, nama,
                             (rekamWajah[i][0], rekamWajah[i][1] - 20),
                             cv2.FONT_HERSHEY_DUPLEX, 1.0, (102, 255, 0), 1)
-<<<<<<< HEAD
                 # Buat file baru dan Input data ke CSV file
                 input = [nama,labels_dic[pred],date,timeStamp]
-=======
-                input = [nama,date,timeStamp]
->>>>>>> fcf5c14c6fd2e4a8262a076df4d35d5c8e219d1b
                 Hour,Minute,Second=timeStamp.split(":")
                 if(label2 != labels_dic[pred]):
                     inputData(input)
