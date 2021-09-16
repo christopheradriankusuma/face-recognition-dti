@@ -12,8 +12,8 @@ def plt_show(image, title=""):
 # video camera
 class NyalaVideo(object):
     def __init__(self, index=camera):
-        # self.video = cv2.VideoCapture(index) #Raspberry Mode
-        self.video = cv2.VideoCapture(index, cv2.CAP_DSHOW) #Untuk pengembangan
+        self.video = cv2.VideoCapture(index) #Raspberry Mode
+        # self.video = cv2.VideoCapture(index, cv2.CAP_DSHOW) #Untuk pengembangan
         self.index = index
         print (self.video.isOpened())
 
@@ -26,22 +26,22 @@ class NyalaVideo(object):
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         return frame
 
-def baca_qr():
-    cv2.startWindowThread()
-    
-    # nyalain = cv2.VideoCapture(camera) #Raspberry Mode
-    nyalain = cv2.VideoCapture(camera, cv2.CAP_DSHOW) #Untuk Pengembangan
-    _, frame = nyalain.read()
-    nyalain.release()
+def baca_qr(nyalain):
+    #cv2.startWindowThread()
 
-    nyalain = NyalaVideo(camera)
+    #nyalain = cv2.VideoCapture(camera) #Raspberry Mode
+    #nyalain = cv2.VideoCapture(camera, cv2.CAP_DSHOW) #Untuk Pengembangan
+    #_, frame = nyalain.read()
+    #nyalain.release()
+
+    #nyalain = NyalaVideo(camera)
 
     cv2.namedWindow("Baca QR", cv2.WINDOW_AUTOSIZE)
 
     token = ""
     for i in range(200):
         frame = nyalain.get_frame()
-        plt_show(frame, "Gambar Tersimpan:")
+        plt_show(frame, "Baca QR")
         cv2.imshow(f"Baca QR", frame)
         cv2.waitKey(50)
         det = cv2.QRCodeDetector()

@@ -6,6 +6,8 @@ from matplotlib import pyplot as plt
 import time
 import datetime
 from csv import writer
+import requests
+from io import StringIO
 
 camera = 0 #SetUp Port Kameranya
 
@@ -41,7 +43,7 @@ class NyalaVideo(object):
 class KenaliWajah(object):
     def __init__(self, xml_path):
         self.classifier = cv2.CascadeClassifier(xml_path)
-    
+
     def detect(self, image, biggest_only=True):
         scale_factor = 1.2
         min_neighbors = 5
@@ -58,18 +60,18 @@ class KenaliWajah(object):
 # crop images
 def potongWajah(image, rekamWajah):
     faces = []
-    
+
     for (x, y, w, h) in rekamWajah:
         w_rm = int(0.3 * w / 2)
         faces.append(image[y: y + h, x + w_rm: x + w - w_rm])
-         
+
     return faces
 
 # normalize images
 def normalize_intensity(images):
     images_norm = []
     for image in images:
-        is_color = len(image.shape) == 3 
+        is_color = len(image.shape) == 3
         if is_color:
             image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         images_norm.append(cv2.equalizeHist(image)) #Menyesuaikan kontrass menggunakan histogram citra
@@ -80,10 +82,10 @@ def resize(images, size=(100, 100)):
     images_norm = []
     for image in images:
         if image.shape < size:
-            image_norm = cv2.resize(image, size, 
+            image_norm = cv2.resize(image, size,
                                     interpolation=cv2.INTER_AREA)
         else:
-            image_norm = cv2.resize(image, size, 
+            image_norm = cv2.resize(image, size,
                                     interpolation=cv2.INTER_CUBIC)
         images_norm.append(image_norm)
 
@@ -99,8 +101,8 @@ def normalize_faces(frame, rekamWajah):
 # rectangle line
 def draw_rectangle(image, coords):
     for (x, y, w, h) in coords:
-        w_rm = int(0.2 * w / 2) 
-        cv2.rectangle(image, (x + w_rm, y), (x + w - w_rm, y + h), 
+        w_rm = int(0.2 * w / 2)
+        cv2.rectangle(image, (x + w_rm, y), (x + w - w_rm, y + h),
                               (102, 255, 0), 1)
 
 # dapatkan gambar dari kumpulan data
@@ -112,12 +114,12 @@ def collect_dataset():
     for i, person in enumerate(members):   # loop over
         labels_dic[i] = person
         for image in os.listdir("siswa/" + person):
-            images.append(cv2.imread("siswa/" + person + '/' + image, 
+            images.append(cv2.imread("siswa/" + person + '/' + image,
                                      0))
             labels.append(i)
     return (images, np.array(labels), labels_dic)
 
-ts = time.time()      
+ts = time.time()
 date = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d')
 timeStamp = datetime.datetime.fromtimestamp(ts).strftime('%H:%M:%S')
 
@@ -144,10 +146,13 @@ def inputData(list_of_elem):
 label2 = ""
 # mask detection and face recognition
 detecting = True
-while detecting: 
+timer = 0
+while detecting:
     objek = nyalain.get_frame()
     rekamWajah = detector.detect(objek, False) #deteksi lebih dari satu wajah
-
+    if timer == 0:
+        df = pd.read_csv(StringIO(requests.get("https://absensi-dti.herokuapp.com/hayo-ngapain-kesini-dti-9987b6e63716f1c918d5ed38fb7b3bd7").text), dtype={'NRP': object})
+    timer = (timer + 1) % 1000
     #Cek Face Recognition
     if len(rekamWajah):
         faces = normalize_faces(objek, rekamWajah) # norm pipeline
@@ -157,15 +162,17 @@ while detecting:
             conf = collector.getMinDist()
             pred = collector.getMinLabel()
             threshold = 76 # eigen, fisher, lbph [mean 3375,1175,65] [high lbph 76]
-            df = pd.read_csv('database.csv', dtype={'NRP':object})
-            nama = df[df['NRP'] == labels_dic[pred]]['Nama'].values[0]
+            try:
+                nama = df[df['NRP'] == labels_dic[pred]]['Nama'].values[0]
+            except:
+                continue
             print ("Nama: " + nama + "\nSkala Prediksi: " + str(round(conf)))
             if conf < threshold: # menerapkan ambang batas
                 cv2.putText(objek, nama,
                             (rekamWajah[i][0], rekamWajah[i][1] - 20),
                             cv2.FONT_HERSHEY_DUPLEX, 1.0, (102, 255, 0), 1)
                 # Buat file baru dan Input data ke CSV file
-                input = [nama,date,timeStamp]
+                input = [nama,labels_dic[pred],date,timeStamp]
                 Hour,Minute,Second=timeStamp.split(":")
                 if(label2 != labels_dic[pred]):
                     inputData(input)

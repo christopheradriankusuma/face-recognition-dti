@@ -4,6 +4,9 @@ import os
 from matplotlib import pyplot as plt
 import pandas as pd
 from bacaqr import baca_qr
+from io import StringIO
+import requests
+import subprocess
 
 #SetUp Port Kameranya
 camera = 0
@@ -85,18 +88,18 @@ obyek = KenaliWajah("xml/frontal_face.xml")
 # crop images
 def cut_faces(image, faces_coord):
     faces = []
-      
+
     for (x, y, w, h) in faces_coord:
         w_rm = int(0.2 * w / 2)
         faces.append(image[y: y + h, x + w_rm: x + w - w_rm])
-         
+
     return faces
 
 # normalize images
 def normalize_intensity(images):
     images_norm = []
     for image in images:
-        is_color = len(image.shape) == 3 
+        is_color = len(image.shape) == 3
         if is_color:
             image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         images_norm.append(cv2.equalizeHist(image))
@@ -131,10 +134,12 @@ def draw_rectangle(image, coords):
                               (200, 200, 0), 4)
 
 # get and save image
-token = baca_qr()
-# if not token:
-#     token = input('Token: ').upper()
-df = pd.read_csv('database.csv', dtype={'NRP': object})
+token = baca_qr(nyalain)
+print(token)
+if not token:
+    token = input('Token: ').upper()
+df = pd.read_csv(StringIO(requests.get("https://absensi-dti.herokuapp.com/hayo-ngapain-kesini-dti-9987b6e63716f1c918d5ed38fb7b3bd7").text), dtype={'NRP': object})
+#print(df)
 db_token = df[df['Token'] == token].values
 
 if len(db_token) == 0:
@@ -160,9 +165,10 @@ if not os.path.exists(folder):
             cv2.imwrite(folder + '/' + str(counter) + '.jpg', faces[0])
             plt_show(faces[0], "Gambar Tersimpan:" + str(counter))
             counter += 1
+            os.system("/usr/bin/mpg123 1.mp3")
         draw_rectangle(frame, faces_coord) # rectangle around face
         if counter < 11:
-            cv2.putText(frame, f"{counter}/10", (5, frame.shape[0]-5), cv2.FONT_HERSHEY_DUPLEX, 1, (255, 255, 255), 1, cv2.LINE_AA)
+            cv2.putText(frame, f"{counter}/10", (5, frame.shape[0]-5), cv2.FONT_HERSHEY_DUPLEX, 1, (66, 55, 245), 1, cv2.LINE_AA)
         cv2.namedWindow(f"Simpan Gambar", cv2.WND_PROP_FULLSCREEN)
         cv2.setWindowProperty("Simpan Gambar",cv2.WND_PROP_FULLSCREEN,cv2.WINDOW_FULLSCREEN)
         cv2.imshow(f"Simpan Gambar", frame) # show in external

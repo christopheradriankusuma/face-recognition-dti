@@ -10,7 +10,7 @@ if not os.path.exists('database.csv'):
         writer.writerow(fields)
 
 if not os.path.exists('absen.csv'):
-    fields = ['Nama', 'Tgl', 'Jam']
+    fields = ['Nama', 'NRP', 'Tgl', 'Jam']
     with open('absen.csv', 'a', newline='') as f:
         writer = csv.writer(f)
         writer.writerow(fields)
@@ -39,4 +39,4 @@ def catatKehadiran():
     print("Record Face ID Pengguna")
     os.system('python catatpengunjung.py') #Ganti sesuai versi python
 
-eel.start('index.html', size=(1000, 600), mode='edge')
+eel.start('index.html', size=(1000, 600), mode='chromium')
