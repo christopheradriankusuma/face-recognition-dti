@@ -12,7 +12,7 @@ import qrcode
 import os
 
 if not os.path.exists('database.csv'):
-    fields = ['ID', 'Nama', 'NRP', 'Token']
+    fields = ['ID', 'Nama', 'No Induk', 'Tanggal lahir', 'Token']
     with open(r'database.csv', 'a', newline='') as f:
         writer = csv.writer(f)
         writer.writerow(fields)
@@ -44,7 +44,7 @@ def register():
 def download(nrp):
     return send_from_directory('static/images/', nrp, as_attachment=True)
 
-# @app.route('/lol', methods=['GET'])
+# @app.route('/secret', methods=['GET'])
 # def db():
 #     return send_from_directory('', 'database.csv', as_attachment=True)
 
