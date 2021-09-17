@@ -144,18 +144,11 @@ label2 = ""
 
 detecting = True
 timer = 0
-<<<<<<< HEAD
 while detecting:
     objek = nyalain.get_frame()
     rekamWajah = detector.detect(objek, False) #deteksi lebih dari satu wajah
     if timer == 0:
         df = pd.read_csv(StringIO(requests.get("https://absensi-dti.herokuapp.com/hayo-ngapain-kesini-dti-9987b6e63716f1c918d5ed38fb7b3bd7").text), dtype={'NRP': object})
-    timer = (timer + 1) % 1000
-while detecting: 
-    objek = nyalain.get_frame()
-    rekamWajah = detector.detect(objek, False)
-    if timer == 0:
-        df = pd.read_csv(StringIO(requests.get(SECRET_URL).text), dtype={'NRP': object})
     timer = (timer + 1) % 1000
     #Cek Face Recognition
     if len(rekamWajah):
