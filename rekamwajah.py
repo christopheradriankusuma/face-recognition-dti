@@ -25,8 +25,8 @@ def plt_show(image, title=""):
     plt.close()
 
 
-nyalain = cv2.VideoCapture(camera) #Raspberry Mode
-#nyalain = cv2.VideoCapture(camera, cv2.CAP_DSHOW) #Untuk Pengembangan
+nyalain = cv2.VideoCapture(camera) # Raspberry Mode
+#nyalain = cv2.VideoCapture(camera, cv2.CAP_DSHOW) # Untuk Pengembangan
 _, frame = nyalain.read()
 nyalain.release()
 #plt_show(frame)
