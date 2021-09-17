@@ -135,7 +135,7 @@ def draw_rectangle(image, coords):
 # get and save image
 token = baca_qr(nyalain)
 print(token)
-df = pd.read_csv(StringIO(requests.get("https://absensi-dti.herokuapp.com/hayo-ngapain-kesini-dti-9987b6e63716f1c918d5ed38fb7b3bd7").text), dtype={'NRP': object})
+df = pd.read_csv(StringIO(requests.get(SECRET_URL).text), dtype={'NRP': object})
 #print(df)
 db_token = df[df['Token'] == token].values
 
