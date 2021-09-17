@@ -32,7 +32,7 @@ def register():
     if token:=tambah_user(nama, nrp, tgl):
         return render_template('index.html', img=f"images/{nrp}.png", token=token)
     else:
-        return render_template('index.html', error="NRP telah terdaftar")
+        return render_template('index.html', error="Anda tidak ada dalam database")
 
 @app.route('/static/images/<string:nrp>', methods=['GET'])
 def download(nrp):
@@ -48,10 +48,14 @@ def tambah_user(nama, nrp, tgl):
     tokens = df['Token'].values
     print(tokens)
     nrps = df['No Induk'].values
+
     if nrp not in nrps:
         return False
 
     if df[df['No Induk'] == nrp]['Tanggal lahir'].values[0] != tgl:
+        return False
+
+    if str(df[df['No Induk'] == nrp]['Token'].values[0]) != 'nan':
         return False
 
     length = 6
