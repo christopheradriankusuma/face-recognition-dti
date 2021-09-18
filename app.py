@@ -32,7 +32,7 @@ def register():
     if token:=tambah_user(nama, nrp, tgl):
         return render_template('index.html', img=f"images/{nrp}.png", token=token)
     else:
-        return render_template('index.html', error="Anda tidak ada dalam database")
+        return render_template('index.html', error="Anda tidak terdaftar dalam database atau anda sudah pernah mendaftar")
 
 @app.route('/static/images/<string:nrp>', methods=['GET'])
 def download(nrp):
