@@ -1,3 +1,4 @@
+from secret import SECRET_URL
 from flask import Flask, request, render_template
 from PIL import Image
 from PIL import ImageFont
@@ -38,7 +39,7 @@ def register():
 def download(nrp):
     return send_from_directory('static/images/', nrp, as_attachment=True)
 
-@app.route('/get-outta-here-lol-053', methods=['GET'])
+@app.route(SECRET_URL, methods=['GET'])
 def db():
     return send_from_directory('', 'database.csv', as_attachment=True)
 
