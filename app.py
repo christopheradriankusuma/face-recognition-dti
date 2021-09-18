@@ -38,9 +38,9 @@ def register():
 def download(nrp):
     return send_from_directory('static/images/', nrp, as_attachment=True)
 
-# @app.route('/secret', methods=['GET'])
-# def db():
-#     return send_from_directory('', 'database.csv', as_attachment=True)
+@app.route('/get-outta-here-lol-053', methods=['GET'])
+def db():
+    return send_from_directory('', 'database.csv', as_attachment=True)
 
 def tambah_user(nama, nrp, tgl):
     df = pd.read_csv('database.csv', dtype={'No Induk': object})
