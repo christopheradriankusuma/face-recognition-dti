@@ -11,6 +11,9 @@ import string
 import qrcode
 import os
 
+if not os.path.exists('static/images'):
+    os.mkdir('static/images')
+
 app = Flask(__name__)
 
 @app.route('/', methods=['GET'])
