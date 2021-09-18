@@ -47,6 +47,7 @@ def tambah_user(nama, nrp, tgl):
     mm, dd, yyyy = tgl.split('-')
     mm = mm.rjust(2, '0')
     dd = dd.rjust(2, '0')
+    print(tgl)
     tgl = f'{mm}/{dd}/{yyyy}'
 
     tokens = df['Token'].values
