@@ -91,3 +91,6 @@ def tambah_user(nama, nrp, tgl):
     df.to_csv('database.csv', index=False)
 
     return token
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0')
