@@ -44,7 +44,7 @@ def download(nrp):
 
 def tambah_user(nama, nrp, tgl):
     df = pd.read_csv('database.csv', dtype={'No Induk': object})
-    mm, dd, yyyy = tgl.split('-')
+    yyyy, mm, dd = tgl.split('-')
     mm = mm.rjust(2, '0')
     dd = dd.rjust(2, '0')
     print(tgl)
@@ -57,6 +57,7 @@ def tambah_user(nama, nrp, tgl):
         return False
     print(df[df['No Induk'] == nrp]['Tanggal Lahir'].values[0])
     print(tgl)
+    return False
     if df[df['No Induk'] == nrp]['Tanggal Lahir'].values[0] != tgl:
         return False
 
