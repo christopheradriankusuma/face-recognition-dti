@@ -56,7 +56,7 @@ def tambah_user(nama, nrp, tgl):
     if nrp not in nrps:
         return False
 
-    if df[df['No Induk'] == nrp]['Tanggal lahir'].values[0] != tgl:
+    if df[df['No Induk'] == nrp]['Tanggal Lahir'].values[0] != tgl:
         return False
 
     if str(df[df['No Induk'] == nrp]['Token'].values[0]) != 'nan':
