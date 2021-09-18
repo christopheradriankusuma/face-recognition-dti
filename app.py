@@ -47,7 +47,6 @@ def tambah_user(nama, nrp, tgl):
     yyyy, mm, dd = tgl.split('-')
     mm = mm.rjust(2, '0')
     dd = dd.rjust(2, '0')
-    print(tgl)
     tgl = f'{mm}/{dd}/{yyyy}'
 
     tokens = df['Token'].values
@@ -55,9 +54,7 @@ def tambah_user(nama, nrp, tgl):
 
     if nrp not in nrps:
         return False
-    print(df[df['No Induk'] == nrp]['Tanggal Lahir'].values[0])
-    print(tgl)
-    return False
+    
     if df[df['No Induk'] == nrp]['Tanggal Lahir'].values[0] != tgl:
         return False
 
