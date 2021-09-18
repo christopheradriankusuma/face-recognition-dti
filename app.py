@@ -45,8 +45,8 @@ def download(nrp):
 def tambah_user(nama, nrp, tgl):
     df = pd.read_csv('database.csv', dtype={'No Induk': object})
     mm, dd, yyyy = tgl.split('-')
-    mm = mm.lstrip('0')
-    dd = dd.lstrip('0')
+    mm = mm.rjust(2, '0')
+    dd = dd.rjust(2, '0')
     tgl = f'{mm}/{dd}/{yyyy}'
 
     tokens = df['Token'].values
